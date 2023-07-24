@@ -2194,6 +2194,176 @@ uint16_t mode_noise16_4()
 }
 static const char _data_FX_MODE_NOISE16_4[] PROGMEM = "Noise 4@!;!;!";
 
+template<int c>
+void setClockSegment(uint8_t num, ...) {
+  va_list ap;
+  va_start(ap, num);
+  for (int i = 0; i < num; i++) {
+    int pos = va_arg(ap, int);
+    for (int j = pos; j < pos + 10; j++)
+      SEGMENT.setPixelColor(
+          j, SEGMENT.color_from_palette(j, false, false, c, 255));
+  }
+}
+
+/*
+ * Shows a clock on a 7 segment display
+ */
+uint16_t mode_clock(void) {
+  if (SEGMENT.length() < 370)
+    return mode_static();
+
+  int tHour = hour(localTime);
+  int tMinute = minute(localTime);
+
+  int h1 = tHour % 10;
+  int h10 = tHour / 10;
+
+  int m1 = tMinute % 10;
+  int m10 = tMinute / 10;
+
+  SEGMENT.fill(SEGMENT.color_from_palette(0, false, false, 2, 255));
+
+  switch (h10) {
+  case 0:
+    setClockSegment<0>(6, 0, 140, 330, 340, 350, 360);
+    break;
+  case 1:
+    setClockSegment<0>(2, 330, 340);
+    break;
+  case 2:
+    setClockSegment<0>(5, 140, 330, 130, 350, 0);
+    break;
+  case 3:
+    setClockSegment<0>(5, 140, 330, 130, 340, 0);
+    break;
+  case 4:
+    setClockSegment<0>(4, 360, 130, 330, 340);
+    break;
+  case 5:
+    setClockSegment<0>(5, 140, 360, 130, 340, 0);
+    break;
+  case 6:
+    setClockSegment<0>(6, 140, 360, 350, 0, 340, 130);
+    break;
+  case 7:
+    setClockSegment<0>(3, 140, 330, 340);
+    break;
+  case 8:
+    setClockSegment<0>(7, 0, 130, 140, 330, 340, 350, 360);
+    break;
+  case 9:
+    setClockSegment<0>(6, 140, 360, 130, 330, 340, 0);
+    break;
+  default:
+    break;
+  }
+  switch (h1) {
+  case 0:
+    setClockSegment<0>(6, 160, 320, 290, 310, 300, 20);
+    break;
+  case 1:
+    setClockSegment<0>(2, 290, 300);
+    break;
+  case 2:
+    setClockSegment<0>(5, 160, 290, 110, 310, 20);
+    break;
+  case 3:
+    setClockSegment<0>(5, 160, 290, 110, 300, 20);
+    break;
+  case 4:
+    setClockSegment<0>(4, 320, 110, 290, 300);
+    break;
+  case 5:
+    setClockSegment<0>(5, 160, 320, 110, 300, 20);
+    break;
+  case 6:
+    setClockSegment<0>(6, 160, 320, 310, 20, 300, 110);
+    break;
+  case 7:
+    setClockSegment<0>(3, 160, 290, 300);
+    break;
+  case 8:
+    setClockSegment<0>(7, 160, 320, 290, 110, 310, 300, 20);
+    break;
+  case 9:
+    setClockSegment<0>(6, 160, 320, 110, 290, 300, 20);
+    break;
+  default:
+    break;
+  }
+  switch (m10) {
+  case 0:
+    setClockSegment<1>(6, 180, 280, 250, 270, 260, 40);
+    break;
+  case 1:
+    setClockSegment<1>(2, 250, 260);
+    break;
+  case 2:
+    setClockSegment<1>(5, 180, 250, 90, 270, 40);
+    break;
+  case 3:
+    setClockSegment<1>(5, 180, 250, 90, 260, 40);
+    break;
+  case 4:
+    setClockSegment<1>(4, 280, 90, 250, 260);
+    break;
+  case 5:
+    setClockSegment<1>(5, 180, 280, 90, 260, 40);
+    break;
+  case 6:
+    setClockSegment<1>(6, 180, 280, 270, 40, 260, 90);
+    break;
+  case 7:
+    setClockSegment<1>(3, 180, 250, 260);
+    break;
+  case 8:
+    setClockSegment<1>(7, 180, 280, 250, 90, 270, 260, 40);
+    break;
+  case 9:
+    setClockSegment<1>(6, 180, 280, 90, 250, 260, 40);
+    break;
+  default:
+    break;
+  }
+  switch (m1) {
+  case 0:
+    setClockSegment<1>(6, 200, 240, 210, 230, 220, 60);
+    break;
+  case 1:
+    setClockSegment<1>(2, 210, 220);
+    break;
+  case 2:
+    setClockSegment<1>(5, 200, 210, 70, 230, 60);
+    break;
+  case 3:
+    setClockSegment<1>(5, 200, 210, 70, 220, 60);
+    break;
+  case 4:
+    setClockSegment<1>(4, 240, 70, 210, 220);
+    break;
+  case 5:
+    setClockSegment<1>(5, 200, 240, 70, 220, 60);
+    break;
+  case 6:
+    setClockSegment<1>(6, 200, 240, 230, 60, 220, 70);
+    break;
+  case 7:
+    setClockSegment<1>(3, 200, 210, 220);
+    break;
+  case 8:
+    setClockSegment<1>(7, 200, 240, 210, 70, 230, 220, 60);
+    break;
+  case 9:
+    setClockSegment<1>(6, 200, 240, 70, 210, 220, 60);
+    break;
+  default:
+    break;
+  }
+
+  return FRAMETIME;
+}
+static const char _data_FX_MODE_CLOCK[] PROGMEM = "Clock@,!;!,!,!";
 
 //based on https://gist.github.com/kriegsman/5408ecd397744ba0393e
 uint16_t mode_colortwinkle()
@@ -7409,6 +7579,7 @@ void WS2812FX::setupEffectData() {
   addEffect(FX_MODE_NOISE16_2, &mode_noise16_2, _data_FX_MODE_NOISE16_2);
   addEffect(FX_MODE_NOISE16_3, &mode_noise16_3, _data_FX_MODE_NOISE16_3);
   addEffect(FX_MODE_NOISE16_4, &mode_noise16_4, _data_FX_MODE_NOISE16_4);
+  addEffect(FX_MODE_CLOCK, &mode_clock, _data_FX_MODE_CLOCK);
   addEffect(FX_MODE_COLORTWINKLE, &mode_colortwinkle, _data_FX_MODE_COLORTWINKLE);
   addEffect(FX_MODE_LAKE, &mode_lake, _data_FX_MODE_LAKE);
   addEffect(FX_MODE_METEOR, &mode_meteor, _data_FX_MODE_METEOR);
