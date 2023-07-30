@@ -11,6 +11,12 @@
  */
 //#include "../usermods/EXAMPLE_v2/usermod_v2_example.h"
 
+#define USERMOD_DIGITAL_CLOCK
+
+#ifdef USERMOD_DIGITAL_CLOCK
+  #include "usermod_digital_clock.h"
+#endif
+
 #ifdef USERMOD_BATTERY
   #include "../usermods/Battery/usermod_v2_Battery.h"
 #endif
@@ -202,6 +208,11 @@ void registerUsermods()
    * \/ \/ \/
    */
   //usermods.add(new MyExampleUsermod());
+
+  #ifdef USERMOD_DIGITAL_CLOCK
+  usermods.add(new UsermodDigitalClock());
+  #endif
+
   #ifdef USERMOD_BATTERY
   usermods.add(new UsermodBattery());
   #endif
